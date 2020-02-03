@@ -9,7 +9,6 @@ conf = {
   entry: { main: "./src/index.ts" },
   output: {
     path: path.resolve(__dirname, "docs"),
-    publicPath: 'http://localhost:8080/docs/',
     filename: "[name].[chunkhash].js",
     pathinfo: false
   },
@@ -53,7 +52,7 @@ conf = {
         use: [
           "style-loader",
           MiniCssExtractPlugin.loader,
-          "css-loader",
+          "css-loader?url=false",
           "postcss-loader",
           "sass-loader"
         ]
@@ -81,6 +80,7 @@ conf = {
 module.exports = (env, options) => {
   let production = options.mode === "production";
   conf.devtool = production ? false : "eval-sourcemap";
+  conf.output.publicPath = production ? "" : "http://localhost:8080/docs/";
 
   if (production)
     conf.plugins = [
